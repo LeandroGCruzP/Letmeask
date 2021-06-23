@@ -1,19 +1,22 @@
-import { useContext } from 'react'
+import { FormEvent, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
 
-import { AuthContext } from '../contexts/AuthContext'
+import { useAuth } from '../contexts/AuthContext'
+import { database } from '../services/firebase'
+
+import { Button } from '../components/Button'
 
 import illustrationImg from '../assets/images/illustration.svg'
 import logoImg from '../assets/images/logo.svg'
 import googleIconImg from '../assets/images/google-icon.svg'
 
-import { Button } from '../components/Button'
-
 import '../styles/auth.scss'
 
 export function Home() {
   const history = useHistory()
-  const { user, signInWithGoogle } = useContext(AuthContext)
+  const { user, signInWithGoogle } = useAuth()
+  const [ roomCode, setRoomCode] = useState('')
 
   async function handleCreateRoom() {
     if (!user) {
@@ -23,8 +26,32 @@ export function Home() {
     history.push('/rooms/new')
   }
 
+  async function handleJoinRoom(event: FormEvent) {
+    event.preventDefault()
+
+    if (roomCode.trim() === '') {
+      return
+    }
+
+    const roomReference = await database.ref(`/rooms/${roomCode}`).get()
+
+    if (!roomReference.exists()) {
+      toast.error("Room does not exists.")
+      return
+    }
+
+    history.push(`/rooms/${roomCode}`)
+  }
+
   return (
     <div id="page-auth">
+      <div>
+        <Toaster 
+          position="top-center"
+          reverseOrder={false}
+        />
+      </div>
+
       <aside>
         <img src={illustrationImg} alt="Ilustração simbolizando perguntas e respostas" />
         <strong>Crie salas de Q&amp;A ao vivo </strong>
@@ -42,10 +69,12 @@ export function Home() {
           
           <div className="separator" >ou entre em uma sala</div>
           
-          <form>
+          <form onSubmit={handleJoinRoom} >
             <input 
               type="text" 
               placeholder="Digite o código da sala"
+              onChange={event => setRoomCode(event.target.value)}
+              value={roomCode}
             />
             <Button type="submit">
               Entrar na sala
