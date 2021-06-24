@@ -40,13 +40,18 @@ export function Home() {
       return
     }
 
+    if (roomReference.val().endedAt) {
+      toast.error("Room already closed.")
+      return
+    }
+
     history.push(`/rooms/${roomCode}`)
   }
 
   return (
     <div id="page-auth">
       <div>
-        <Toaster 
+        <Toaster
           position="top-center"
           reverseOrder={false}
         />
@@ -61,17 +66,17 @@ export function Home() {
       <main>
         <div className="main-content" >
           <img src={logoImg} alt="Letmeask" />
-          
+
           <button className="create-room" onClick={handleCreateRoom} >
             <img src={googleIconImg} alt="Logo do Google" />
             Crie sua sala com o Google
           </button>
-          
+
           <div className="separator" >ou entre em uma sala</div>
-          
+
           <form onSubmit={handleJoinRoom} >
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Digite o código da sala"
               onChange={event => setRoomCode(event.target.value)}
               value={roomCode}
