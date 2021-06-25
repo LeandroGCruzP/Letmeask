@@ -24,6 +24,10 @@
             fill: #fff;
           }
         }
+
+        button + button {
+          padding: 0 12px;
+        }
       }
     }
   }
