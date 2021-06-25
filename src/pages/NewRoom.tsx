@@ -17,7 +17,7 @@ export function NewRoom() {
   const [newRoom, setNewRoom] = useState('')
 
   async function handleCreateRoom(event: FormEvent) {
-    event.preventDefault() // Nao dar reload ao clicar no botao realizando a cricao da sala
+    event.preventDefault()
 
     if(newRoom.trim() === '') {
       return
@@ -30,7 +30,7 @@ export function NewRoom() {
       authorId: user?.id
     })
 
-    history.push(`/rooms/${firebaseRoom.key}`)
+    history.push(`/admin/rooms/${firebaseRoom.key}`)
   }
 
   return (
@@ -44,12 +44,12 @@ export function NewRoom() {
       <main>
         <div className="main-content" >
           <img src={logoImg} alt="Letmeask" />
-          
+
           <h2>Criar uma nova sala</h2>
-          
+
           <form onSubmit={handleCreateRoom} >
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Nome da sala"
               onChange={event => setNewRoom(event.target.value)}
               value={newRoom}

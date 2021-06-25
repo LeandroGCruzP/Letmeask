@@ -1,4 +1,5 @@
 import { useState, useEffect, ReactNode } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import { auth, firebase } from '../services/firebase'
 import { AuthContext } from './AuthContext'
@@ -15,6 +16,7 @@ interface AuthContextProviderProps {
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [ user, setUser ] = useState<User>()
+  const history = useHistory()
 
   /** Descrição:
    * Manter sessão de usuario conectado ao dar F5
@@ -62,10 +64,16 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         avatar: photoURL
       })
     }
-  }  
+  }
+
+  async function signOut() {
+    await auth.signOut()
+    setUser(undefined)
+    history.push('/')
+  }
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }} >
+    <AuthContext.Provider value={{ user, signInWithGoogle, signOut }} >
       {props.children}
     </AuthContext.Provider>
   )

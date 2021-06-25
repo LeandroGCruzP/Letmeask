@@ -9,6 +9,7 @@ interface User {
 interface AuthContextType {
   user: User | undefined;
   signInWithGoogle: () => Promise<void>
+  signOut: () => void
 }
 
 export const AuthContext = createContext({} as AuthContextType)
