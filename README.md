@@ -55,7 +55,7 @@ ou
 
 Na raíz do projeto você deve criar um arquivo chamado .env.local e colocar as keys que o firebase te entrega. Para isso crie uma conta no firebase console (com a conta Google) e cria um projeto chamado letmeask e a key deve colocar no seguinte formato.
 
-# Firebase
+## .env.local
 
 `REACT_APP_API_KEY="key"`
 `REACT_APP_AUTH_DOMAIN="key"`
